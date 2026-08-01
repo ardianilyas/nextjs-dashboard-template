@@ -73,12 +73,14 @@ export function Sidebar({
   };
 
   const handleNavClick = (item: NavItem) => {
-    setCurrentActive(item.id);
-    if (item.children) {
+    if (item.children && item.children.length > 0) {
+      // Toggle sub-menu expansion without setting parent item active background
       setOpenSubMenus((prev) => ({ ...prev, [item.id]: !prev[item.id] }));
+    } else {
+      setCurrentActive(item.id);
+      if (onSelectNav) onSelectNav(item.id);
+      if (onCloseMobile) onCloseMobile();
     }
-    if (onSelectNav) onSelectNav(item.id);
-    if (onCloseMobile && !item.children) onCloseMobile();
   };
 
   const handleSubItemClick = (subItem: SubNavItem) => {
@@ -149,9 +151,9 @@ export function Sidebar({
                 {group.items.map((item) => {
                   const hasChildren = Boolean(item.children && item.children.length > 0);
                   const isSubOpen = Boolean(openSubMenus[item.id]);
-                  const isParentActive =
-                    currentActive === item.id ||
-                    (item.children && item.children.some((sub) => sub.id === currentActive));
+
+                  // Only items WITHOUT children get the active parent background
+                  const isDirectActive = !hasChildren && currentActive === item.id;
 
                   // Collapsed view with Sub-Menu -> Dropdown Menu
                   if (isCollapsed && hasChildren) {
@@ -160,24 +162,14 @@ export function Sidebar({
                         <DropdownMenuTrigger asChild>
                           <button
                             title={item.label}
-                            className={cn(
-                              "w-full flex items-center justify-center p-3 rounded-xl text-sm font-medium transition-all group relative",
-                              isParentActive
-                                ? "bg-[#F05323] text-white shadow-sm shadow-orange-500/20"
-                                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                            )}
+                            className="w-full flex items-center justify-center p-3 rounded-xl text-sm font-medium transition-all group relative text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                           >
-                            <span
-                              className={cn(
-                                "transition-colors shrink-0",
-                                isParentActive
-                                  ? "text-white"
-                                  : "text-slate-400 group-hover:text-slate-700"
-                              )}
-                            >
+                            <span className="transition-colors shrink-0 text-slate-400 group-hover:text-slate-700">
                               {iconMap[item.icon] || <LayoutGrid className="w-4 h-4" />}
                             </span>
-                            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#F05323] ring-2 ring-white" />
+                            {item.badge !== undefined && (
+                              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#F05323] ring-2 ring-white" />
+                            )}
                           </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent side="right" align="start" className="w-48 ml-2">
@@ -199,7 +191,7 @@ export function Sidebar({
                     );
                   }
 
-                  // Normal expanded view (or non-child collapsed view)
+                  // Normal expanded view
                   return (
                     <div key={item.id} className="space-y-1">
                       <button
@@ -210,7 +202,7 @@ export function Sidebar({
                           isCollapsed
                             ? "justify-center p-3"
                             : "justify-between px-3.5 py-2.5",
-                          isParentActive
+                          isDirectActive
                             ? "bg-[#F05323] text-white shadow-sm shadow-orange-500/20"
                             : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                         )}
@@ -224,7 +216,7 @@ export function Sidebar({
                           <span
                             className={cn(
                               "transition-colors shrink-0",
-                              isParentActive
+                              isDirectActive
                                 ? "text-white"
                                 : "text-slate-400 group-hover:text-slate-700"
                             )}
@@ -239,9 +231,9 @@ export function Sidebar({
                           <div className="flex items-center space-x-2">
                             {item.badge !== undefined && (
                               <Badge
-                                variant={isParentActive ? "secondary" : "badgeCount"}
+                                variant={isDirectActive ? "secondary" : "badgeCount"}
                                 className={cn(
-                                  isParentActive && "bg-white/20 text-white font-semibold"
+                                  isDirectActive && "bg-white/20 text-white font-semibold"
                                 )}
                               >
                                 {item.badge}
@@ -251,7 +243,7 @@ export function Sidebar({
                             {hasChildren && (
                               <span
                                 onClick={(e) => toggleSubMenu(item.id, e)}
-                                className="p-0.5 rounded hover:bg-white/20 transition-transform"
+                                className="p-0.5 rounded text-slate-400 hover:text-slate-700 transition-transform"
                               >
                                 {isSubOpen ? (
                                   <ChevronDown className="w-3.5 h-3.5" />
