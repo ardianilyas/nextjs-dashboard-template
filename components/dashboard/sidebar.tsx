@@ -15,11 +15,21 @@ import {
   HelpCircle,
   LogOut,
   X,
+  ChevronDown,
+  ChevronRight,
 } from "lucide-react";
-import { NavGroup, NavItem } from "@/types/dashboard";
+import { NavGroup, NavItem, SubNavItem } from "@/types/dashboard";
 import { sidebarNavigation } from "@/data/dashboard-config";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const iconMap: Record<string, React.ReactNode> = {
   LayoutGrid: <LayoutGrid className="w-4 h-4" />,
@@ -53,10 +63,27 @@ export function Sidebar({
   className,
 }: SidebarProps) {
   const [currentActive, setCurrentActive] = useState(activeId);
+  const [openSubMenus, setOpenSubMenus] = useState<Record<string, boolean>>({
+    store: true, // Default open store sub-menu
+  });
+
+  const toggleSubMenu = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setOpenSubMenus((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
 
   const handleNavClick = (item: NavItem) => {
     setCurrentActive(item.id);
+    if (item.children) {
+      setOpenSubMenus((prev) => ({ ...prev, [item.id]: !prev[item.id] }));
+    }
     if (onSelectNav) onSelectNav(item.id);
+    if (onCloseMobile && !item.children) onCloseMobile();
+  };
+
+  const handleSubItemClick = (subItem: SubNavItem) => {
+    setCurrentActive(subItem.id);
+    if (onSelectNav) onSelectNav(subItem.id);
     if (onCloseMobile) onCloseMobile();
   };
 
@@ -120,59 +147,156 @@ export function Sidebar({
               )}
               <div className="space-y-1">
                 {group.items.map((item) => {
-                  const isActive = currentActive === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => handleNavClick(item)}
-                      title={isCollapsed ? item.label : undefined}
-                      className={cn(
-                        "w-full flex items-center rounded-xl text-sm font-medium transition-all group relative",
-                        isCollapsed
-                          ? "justify-center p-3"
-                          : "justify-between px-3.5 py-2.5",
-                        isActive
-                          ? "bg-[#F05323] text-white shadow-sm shadow-orange-500/20"
-                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                      )}
-                    >
-                      <div
-                        className={cn(
-                          "flex items-center",
-                          isCollapsed ? "justify-center" : "space-x-3"
-                        )}
-                      >
-                        <span
-                          className={cn(
-                            "transition-colors shrink-0",
-                            isActive
-                              ? "text-white"
-                              : "text-slate-400 group-hover:text-slate-700"
-                          )}
-                        >
-                          {iconMap[item.icon] || <LayoutGrid className="w-4 h-4" />}
-                        </span>
-                        {!isCollapsed && <span>{item.label}</span>}
-                      </div>
+                  const hasChildren = Boolean(item.children && item.children.length > 0);
+                  const isSubOpen = Boolean(openSubMenus[item.id]);
+                  const isParentActive =
+                    currentActive === item.id ||
+                    (item.children && item.children.some((sub) => sub.id === currentActive));
 
-                      {/* Badge Display */}
-                      {item.badge !== undefined && (
-                        <>
-                          {!isCollapsed ? (
-                            <Badge
-                              variant={isActive ? "secondary" : "badgeCount"}
+                  // Collapsed view with Sub-Menu -> Dropdown Menu
+                  if (isCollapsed && hasChildren) {
+                    return (
+                      <DropdownMenu key={item.id}>
+                        <DropdownMenuTrigger asChild>
+                          <button
+                            title={item.label}
+                            className={cn(
+                              "w-full flex items-center justify-center p-3 rounded-xl text-sm font-medium transition-all group relative",
+                              isParentActive
+                                ? "bg-[#F05323] text-white shadow-sm shadow-orange-500/20"
+                                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                            )}
+                          >
+                            <span
                               className={cn(
-                                isActive && "bg-white/20 text-white font-semibold"
+                                "transition-colors shrink-0",
+                                isParentActive
+                                  ? "text-white"
+                                  : "text-slate-400 group-hover:text-slate-700"
                               )}
                             >
-                              {item.badge}
-                            </Badge>
-                          ) : (
+                              {iconMap[item.icon] || <LayoutGrid className="w-4 h-4" />}
+                            </span>
                             <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#F05323] ring-2 ring-white" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent side="right" align="start" className="w-48 ml-2">
+                          <DropdownMenuLabel>{item.label}</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          {item.children?.map((sub) => (
+                            <DropdownMenuItem
+                              key={sub.id}
+                              onClick={() => handleSubItemClick(sub)}
+                              className={cn(
+                                currentActive === sub.id && "font-bold text-[#F05323]"
+                              )}
+                            >
+                              {sub.label}
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    );
+                  }
+
+                  // Normal expanded view (or non-child collapsed view)
+                  return (
+                    <div key={item.id} className="space-y-1">
+                      <button
+                        onClick={() => handleNavClick(item)}
+                        title={isCollapsed ? item.label : undefined}
+                        className={cn(
+                          "w-full flex items-center rounded-xl text-sm font-medium transition-all group relative",
+                          isCollapsed
+                            ? "justify-center p-3"
+                            : "justify-between px-3.5 py-2.5",
+                          isParentActive
+                            ? "bg-[#F05323] text-white shadow-sm shadow-orange-500/20"
+                            : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                        )}
+                      >
+                        <div
+                          className={cn(
+                            "flex items-center",
+                            isCollapsed ? "justify-center" : "space-x-3"
                           )}
-                        </>
+                        >
+                          <span
+                            className={cn(
+                              "transition-colors shrink-0",
+                              isParentActive
+                                ? "text-white"
+                                : "text-slate-400 group-hover:text-slate-700"
+                            )}
+                          >
+                            {iconMap[item.icon] || <LayoutGrid className="w-4 h-4" />}
+                          </span>
+                          {!isCollapsed && <span>{item.label}</span>}
+                        </div>
+
+                        {/* Right side controls (Badge & Chevron) */}
+                        {!isCollapsed && (
+                          <div className="flex items-center space-x-2">
+                            {item.badge !== undefined && (
+                              <Badge
+                                variant={isParentActive ? "secondary" : "badgeCount"}
+                                className={cn(
+                                  isParentActive && "bg-white/20 text-white font-semibold"
+                                )}
+                              >
+                                {item.badge}
+                              </Badge>
+                            )}
+
+                            {hasChildren && (
+                              <span
+                                onClick={(e) => toggleSubMenu(item.id, e)}
+                                className="p-0.5 rounded hover:bg-white/20 transition-transform"
+                              >
+                                {isSubOpen ? (
+                                  <ChevronDown className="w-3.5 h-3.5" />
+                                ) : (
+                                  <ChevronRight className="w-3.5 h-3.5" />
+                                )}
+                              </span>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Collapsed Badge Dot */}
+                        {isCollapsed && item.badge !== undefined && (
+                          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#F05323] ring-2 ring-white" />
+                        )}
+                      </button>
+
+                      {/* Nested Sub-Menu Items */}
+                      {!isCollapsed && hasChildren && isSubOpen && (
+                        <div className="ml-4 pl-3 border-l border-slate-200/80 space-y-1 py-1 animate-in fade-in slide-in-from-top-1 duration-200">
+                          {item.children?.map((sub) => {
+                            const isSubActive = currentActive === sub.id;
+                            return (
+                              <button
+                                key={sub.id}
+                                onClick={() => handleSubItemClick(sub)}
+                                className={cn(
+                                  "w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-colors text-left",
+                                  isSubActive
+                                    ? "text-[#F05323] font-bold bg-orange-50/80"
+                                    : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                                )}
+                              >
+                                <span>{sub.label}</span>
+                                {sub.badge && (
+                                  <span className="text-[10px] bg-slate-100 px-1.5 py-0.5 rounded-full font-semibold text-slate-600">
+                                    {sub.badge}
+                                  </span>
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
                       )}
-                    </button>
+                    </div>
                   );
                 })}
               </div>

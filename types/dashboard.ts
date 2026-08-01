@@ -1,5 +1,13 @@
 import { ReactNode } from "react";
 
+export type SubNavItem = {
+  id: string;
+  label: string;
+  href: string;
+  badge?: string | number;
+  isActive?: boolean;
+};
+
 export type NavItem = {
   id: string;
   label: string;
@@ -8,6 +16,7 @@ export type NavItem = {
   badge?: string | number;
   badgeVariant?: "primary" | "secondary" | "danger";
   isActive?: boolean;
+  children?: SubNavItem[];
 };
 
 export type NavGroup = {
