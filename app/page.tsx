@@ -21,7 +21,7 @@ export default function DashboardPage() {
     >
       {/* Blank Dashboard Page Content Template Placeholder */}
       <div className="w-full min-h-[520px] bg-white rounded-3xl border-2 border-dashed border-slate-200/80 p-8 flex flex-col items-center justify-center text-center space-y-4 shadow-2xs">
-        <div className="w-14 h-14 rounded-2xl bg-orange-50 text-[#F05323] border border-orange-100 flex items-center justify-center">
+        <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-[#136650] border border-emerald-100 flex items-center justify-center">
           <Layout className="w-7 h-7" />
         </div>
         <div className="max-w-md space-y-1">

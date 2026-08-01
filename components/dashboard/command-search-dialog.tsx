@@ -33,9 +33,9 @@ export function CommandSearchDialog({
   }, [open, onOpenChange]);
 
   const quickLinks = [
-    { label: "Sales Overview & Analytics", icon: <LineChart className="w-4 h-4 text-[#F05323]" /> },
+    { label: "Sales Overview & Analytics", icon: <LineChart className="w-4 h-4 text-[#136650]" /> },
     { label: "Recent Product Store Items", icon: <Store className="w-4 h-4 text-blue-500" /> },
-    { label: "Customer Directory & Insights", icon: <Users className="w-4 h-4 text-emerald-500" /> },
+    { label: "Customer Directory & Insights", icon: <Users className="w-4 h-4 text-emerald-600" /> },
     { label: "Orders & Transaction Logs", icon: <ShoppingBag className="w-4 h-4 text-purple-500" /> },
     { label: "System & Store Settings", icon: <Settings className="w-4 h-4 text-slate-500" /> },
   ];

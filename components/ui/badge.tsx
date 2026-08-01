@@ -9,7 +9,7 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          "border-transparent bg-[#F05323] text-white hover:bg-[#d94315]",
+          "border-transparent bg-[#136650] text-white hover:bg-[#0d4f3e]",
         secondary:
           "border-transparent bg-slate-100 text-slate-900 hover:bg-slate-200",
         destructive:
@@ -20,7 +20,7 @@ const badgeVariants = cva(
         processing: "bg-blue-50 text-blue-600 border border-blue-100",
         trendUp: "bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full text-[11px]",
         trendDown: "bg-red-50 text-red-500 px-2 py-0.5 rounded-full text-[11px]",
-        badgeCount: "bg-[#F05323] text-white text-[11px] font-bold px-2 py-0.5 rounded-full",
+        badgeCount: "bg-[#136650] text-white text-[11px] font-bold px-2 py-0.5 rounded-full",
       },
     },
     defaultVariants: {

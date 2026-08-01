@@ -8,8 +8,8 @@
     --card-foreground: #0f172a;
     --popover: #ffffff;
     --popover-foreground: #0f172a;
-    --primary: #f05323;
-    --primary-hover: #d94315;
+    --primary: #136650;
+    --primary-hover: #0d4f3e;
     --primary-foreground: #ffffff;
     --secondary: #f1f5f9;
     --secondary-foreground: #0f172a;
@@ -21,7 +21,7 @@
     --destructive-foreground: #f8fafc;
     --border: #e2e8f0;
     --input: #e2e8f0;
-    --ring: #f05323;
+    --ring: #136650;
     --radius: 0.75rem;
   }
 }
@@ -34,8 +34,31 @@ body {
 }
 
 /* Custom CSS Pattern for Diagonal Striped Bar Fill */
+.bg-striped-green {
+  background-color: #136650;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    rgba(255, 255, 255, 0.22) 4px,
+    rgba(255, 255, 255, 0.22) 8px
+  );
+}
+
+.bg-striped-green-dark {
+  background-color: #0d4f3e;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    rgba(255, 255, 255, 0.25) 4px,
+    rgba(255, 255, 255, 0.25) 8px
+  );
+}
+
+/* Backward compatibility aliases */
 .bg-striped-orange {
-  background-color: #f05323;
+  background-color: #136650;
   background-image: repeating-linear-gradient(
     -45deg,
     transparent,
@@ -46,7 +69,7 @@ body {
 }
 
 .bg-striped-orange-dark {
-  background-color: #e04819;
+  background-color: #0d4f3e;
   background-image: repeating-linear-gradient(
     -45deg,
     transparent,

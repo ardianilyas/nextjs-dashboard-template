@@ -47,7 +47,7 @@ export function DateRangePicker({
           <DropdownMenuItem
             key={range}
             onClick={() => handleSelect(range)}
-            className={selectedRange === range ? "font-bold text-[#F05323]" : ""}
+            className={selectedRange === range ? "font-bold text-[#136650]" : ""}
           >
             {range}
           </DropdownMenuItem>

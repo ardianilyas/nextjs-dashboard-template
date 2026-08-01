@@ -226,7 +226,7 @@ export function RecentOrdersTable({
                         handleRowClick(order);
                       }}
                     >
-                      <button className="p-1 rounded-md text-slate-400 hover:text-[#F05323] hover:bg-orange-50">
+                      <button className="p-1 rounded-md text-slate-400 hover:text-[#136650] hover:bg-emerald-50">
                         <Eye className="w-4 h-4" />
                       </button>
                     </td>

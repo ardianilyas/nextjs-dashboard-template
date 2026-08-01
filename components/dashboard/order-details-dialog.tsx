@@ -58,7 +58,7 @@ export function OrderDetailsDialog({
         <div className="space-y-4 py-3">
           {/* Customer Info Box */}
           <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-full bg-[#F05323] text-white flex items-center justify-center font-bold text-sm overflow-hidden">
+            <div className="w-10 h-10 rounded-full bg-[#136650] text-white flex items-center justify-center font-bold text-sm overflow-hidden">
               {order.customerAvatar ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -104,9 +104,9 @@ export function OrderDetailsDialog({
             </div>
             <div className="flex justify-between py-1 text-sm font-bold text-slate-900 pt-2 border-t border-slate-100">
               <span className="flex items-center gap-1.5">
-                <CreditCard className="w-4 h-4 text-[#F05323]" /> Total Amount:
+                <CreditCard className="w-4 h-4 text-[#136650]" /> Total Amount:
               </span>
-              <span className="text-[#F05323] text-base">
+              <span className="text-[#136650] text-base">
                 {formatCurrency(order.total)}
               </span>
             </div>

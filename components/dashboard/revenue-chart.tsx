@@ -79,20 +79,20 @@ export function RevenueChart({ data = revenueAnalyticsData }: RevenueChartProps)
                 {/* Floating Tooltip Pill for Active Bar */}
                 {isSelected && (
                   <div className="absolute -top-3 z-20 flex flex-col items-center animate-in fade-in zoom-in-95 duration-150">
-                    <div className="bg-[#F05323] text-white text-xs font-bold px-3 py-1 rounded-xl shadow-md shadow-orange-500/30 whitespace-nowrap">
+                    <div className="bg-[#136650] text-white text-xs font-bold px-3 py-1 rounded-xl shadow-md shadow-emerald-900/30 whitespace-nowrap">
                       {item.formattedValue}
                     </div>
                     {/* Circle Dot Indicator matching image */}
-                    <div className="w-3.5 h-3.5 rounded-full bg-white border-2 border-[#F05323] -mt-0.5 shadow-xs" />
+                    <div className="w-3.5 h-3.5 rounded-full bg-white border-2 border-[#136650] -mt-0.5 shadow-xs" />
                   </div>
                 )}
 
-                {/* Orange Striped Textured Bar matching image */}
+                {/* Textured Bar */}
                 <div
                   className={`w-full rounded-2xl transition-all duration-300 relative overflow-hidden ${
                     isSelected
-                      ? "bg-striped-orange-dark ring-2 ring-[#F05323] ring-offset-2 scale-102"
-                      : "bg-striped-orange hover:bg-striped-orange-dark opacity-95 hover:opacity-100"
+                      ? "bg-striped-green-dark ring-2 ring-[#136650] ring-offset-2 scale-102"
+                      : "bg-striped-green hover:bg-striped-green-dark opacity-95 hover:opacity-100"
                   }`}
                   style={{ height: `${heightPercent}%` }}
                 />

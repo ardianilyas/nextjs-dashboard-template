@@ -75,7 +75,7 @@ export function Header({
           title="Notifications"
         >
           <Bell className="w-3.5 h-3.5 text-slate-500" />
-          <span className="absolute top-1.5 right-2 w-1.5 h-1.5 rounded-full bg-[#F05323] ring-2 ring-white" />
+          <span className="absolute top-1.5 right-2 w-1.5 h-1.5 rounded-full bg-[#136650] ring-2 ring-white" />
         </button>
 
         {/* Help Center Icon */}
@@ -91,7 +91,7 @@ export function Header({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="flex items-center space-x-2 bg-slate-50 border border-slate-200/70 rounded-full p-1 pr-2.5 hover:bg-slate-100 transition-all cursor-pointer outline-none">
-              <div className="w-7 h-7 rounded-full bg-[#F05323] flex items-center justify-center text-white font-bold text-[11px] overflow-hidden shrink-0">
+              <div className="w-7 h-7 rounded-full bg-[#136650] flex items-center justify-center text-white font-bold text-[11px] overflow-hidden shrink-0">
                 {user.avatarUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img

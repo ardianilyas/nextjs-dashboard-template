@@ -74,7 +74,6 @@ export function Sidebar({
 
   const handleNavClick = (item: NavItem) => {
     if (item.children && item.children.length > 0) {
-      // Toggle sub-menu expansion without setting parent item active background
       setOpenSubMenus((prev) => ({ ...prev, [item.id]: !prev[item.id] }));
     } else {
       setCurrentActive(item.id);
@@ -106,7 +105,7 @@ export function Sidebar({
           )}
         >
           <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-xl bg-[#F05323] flex items-center justify-center text-white shadow-md shadow-orange-500/20 font-bold text-lg shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-[#136650] flex items-center justify-center text-white shadow-md shadow-emerald-900/20 font-bold text-lg shrink-0">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -151,8 +150,6 @@ export function Sidebar({
                 {group.items.map((item) => {
                   const hasChildren = Boolean(item.children && item.children.length > 0);
                   const isSubOpen = Boolean(openSubMenus[item.id]);
-
-                  // Only items WITHOUT children get the active parent background
                   const isDirectActive = !hasChildren && currentActive === item.id;
 
                   // Collapsed view with Sub-Menu -> Dropdown Menu
@@ -168,7 +165,7 @@ export function Sidebar({
                               {iconMap[item.icon] || <LayoutGrid className="w-4 h-4" />}
                             </span>
                             {item.badge !== undefined && (
-                              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#F05323] ring-2 ring-white" />
+                              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#136650] ring-2 ring-white" />
                             )}
                           </button>
                         </DropdownMenuTrigger>
@@ -180,7 +177,7 @@ export function Sidebar({
                               key={sub.id}
                               onClick={() => handleSubItemClick(sub)}
                               className={cn(
-                                currentActive === sub.id && "font-bold text-[#F05323]"
+                                currentActive === sub.id && "font-bold text-[#136650]"
                               )}
                             >
                               {sub.label}
@@ -203,7 +200,7 @@ export function Sidebar({
                             ? "justify-center p-3"
                             : "justify-between px-3.5 py-2.5",
                           isDirectActive
-                            ? "bg-[#F05323] text-white shadow-sm shadow-orange-500/20"
+                            ? "bg-[#136650] text-white shadow-sm shadow-emerald-900/20"
                             : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                         )}
                       >
@@ -257,7 +254,7 @@ export function Sidebar({
 
                         {/* Collapsed Badge Dot */}
                         {isCollapsed && item.badge !== undefined && (
-                          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#F05323] ring-2 ring-white" />
+                          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#136650] ring-2 ring-white" />
                         )}
                       </button>
 
@@ -273,7 +270,7 @@ export function Sidebar({
                                 className={cn(
                                   "w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-colors text-left",
                                   isSubActive
-                                    ? "text-[#F05323] font-bold bg-orange-50/80"
+                                    ? "text-[#136650] font-bold bg-emerald-50/80"
                                     : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
                                 )}
                               >
